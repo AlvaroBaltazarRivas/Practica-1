@@ -1,0 +1,38 @@
+public class PracticaElDos
+{
+    public boolean puedoGenerar(int[]a,int x){
+        return puedoGenerar(a,x,0,0);
+    }
+    private boolean puedoGenerar(int [] a,int x,int con,int sec){
+        boolean res=false;
+        int num=generar(a,contador(x),con,sec);
+        if(num==x){
+            res=true;
+        }else if(con==a.length-contador(x)){
+            return res;
+        }else if(sec==a.length-contador(x)){
+            res = puedoGenerar(a,x,con+1,con+1);
+        }else{
+            res = puedoGenerar(a,x,con,sec+1);
+        }
+        return res;
+    }
+    private int contador(int numero){
+    int res=0;
+    if(numero!=0){
+        res++;
+        res=res+ contador(numero/10);
+    }
+    return res;
+    }
+    
+    private int generar(int [] numero, int dig,int cont,int sec){
+        int res=0;
+        if(dig==1){
+            res=numero[cont];
+        }else{
+            res= (numero[cont]*(int)(Math.pow(10,dig-1)))+generar(numero,dig-1,sec+1,sec+1);
+        }
+        return res;
+    }
+}
