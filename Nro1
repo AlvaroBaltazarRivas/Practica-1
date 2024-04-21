@@ -1,0 +1,48 @@
+public class Practicauno
+{
+     public boolean puedoSalir(int n, String[] maze){
+        int[] position = getPosition(0, 0, maze);
+        if(position != null){
+            return wanted(position[0], position[1], maze); 
+        }
+        return false;
+    }
+
+    private int[] getPosition(int i, int j, String[] maze){
+        if(i < maze.length){
+            if(j < maze[i].length()){
+                if(maze[i].charAt(j) == 'S'){
+                    return new int[]{i, j};
+                }else{
+                    return getPosition(i, j+1, maze);
+                }
+            }else{
+            return getPosition(i+1, 0, maze);
+            }
+         
+        }
+        return null;
+    }
+
+    private boolean wanted(int x, int y, String[] maze){
+        if (valida(x, y, maze)) {
+            char charActual = maze[x].charAt(y);
+            if (charActual == 'E') {
+                return true;
+            }
+            maze[x] = maze[x].substring(0, y) + 'x' + maze[x].substring(y + 1);  
+            boolean found = wanted(x - 1, y, maze) ||
+                wanted(x, y + 1, maze) ||
+                wanted(x + 1, y, maze) ||
+                wanted(x, y - 1, maze);
+            maze[x] = maze[x].substring(0, y) + charActual + maze[x].substring(y + 1); 
+            return found;
+        }
+        return false;
+    }
+
+    private boolean valida(int x, int y, String[] maze){    
+        int n = maze.length;
+        return x >= 0 && x < n && y >= 0 && y < n && maze[x].charAt(y) != '?' && maze[x].charAt(y) != 'x';
+    }
+}
